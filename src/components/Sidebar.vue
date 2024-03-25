@@ -12,38 +12,49 @@
 
     <h3>Menu</h3>
     <div class="menu">
-      <router-link to="/" class="button">
+      <router-link to="/" class="button" v-if="authStore.loggedIn">
         <span class="material-icons">home</span>
         <span class="text">Home</span>
       </router-link>
-      <router-link to="/about" class="button">
-        <span class="material-icons">description</span>
-        <span class="text">About</span>
-      </router-link>
-      <router-link to="/team" class="button">
+      <router-link to="/users" class="button" v-if="authStore.loggedIn">
         <span class="material-icons">group</span>
-        <span class="text">Team</span>
+        <span class="text">Utilisateur</span>
       </router-link>
-      <router-link to="/contact" class="button">
-        <span class="material-icons">email</span>
-        <span class="text">Contact</span>
+      <router-link to="/login" class="button" v-if="!authStore.loggedIn">
+        <span class="material-icons">login</span>
+        <span class="text">Se connecter</span>
+      </router-link>
+      <router-link to="/chauffeur" class="button" v-if="authStore.loggedIn">
+        <span class="material-icons">airline_seat_recline_extra</span>
+        <span class="text">Chauffeur</span>
+      </router-link>
+      <router-link to="/vehicule" class="button" v-if="authStore.loggedIn">
+        <span class="material-icons">airport_shuttle</span>
+        <span class="text">Véhicule</span>
       </router-link>
     </div>
 
     <div class="flex"></div>
 
     <div class="menu">
-      <router-link to="/settings" class="button">
+      <router-link to="/settings" class="button" v-if="authStore.loggedIn">
         <span class="material-icons">settings</span>
         <span class="text">Settings</span>
       </router-link>
+      <button @click="authStore.handleLogout" class="button" v-if="authStore.loggedIn">
+        <span class="material-icons">logout</span>
+        <span class="text">Déconnecter</span>
+      </button>
     </div>
   </aside>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import logoURL from "../assets/logo_stcr.png";
+import { useAuthStore } from "@/stores/auth"
+import logoURL from "../assets/images/logo_stcr.png";
+
+const authStore = useAuthStore();
 
 const is_expanded = ref(localStorage.getItem("is_expanded") === "true");
 
@@ -91,6 +102,7 @@ aside {
 
     .menu-toggle {
       transition: 0.2s ease-in-out;
+
       .material-icons {
         font-size: 2rem;
         color: var(--light);
@@ -136,6 +148,7 @@ aside {
         color: var(--light);
         transition: 0.2s ease-in-out;
       }
+
       .text {
         color: var(--light);
         transition: 0.2s ease-in-out;
@@ -149,6 +162,7 @@ aside {
           color: var(--primary);
         }
       }
+
       &.router-link-exact-active {
         background-color: var(--dark-alt);
         border-right: 5px solid var(--primary);
@@ -166,6 +180,7 @@ aside {
 
     .menu-toggle-wrap {
       top: -3rem;
+
       .menu-toggle {
         transform: rotate(-180deg);
       }

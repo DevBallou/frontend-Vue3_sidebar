@@ -1,10 +1,14 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import Sidebar from "./components/Sidebar.vue";
+import LoginView from "./components/LoginView.vue";
+import { useAuthStore } from "./stores/auth";
+
+const useStore = useAuthStore();
 </script>
 
 <template>
-  <header>
+  <header v-if="useStore.loggedIn">
     <div class="wrapper">
       <Sidebar />
     </div>
